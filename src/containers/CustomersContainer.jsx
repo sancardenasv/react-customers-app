@@ -26,7 +26,7 @@ class CustomersContainer extends Component {
     renderBody = customers => (
         <div className="row justify-content-center">
             <CustomerList customers={customers}
-                urlPath={'customer/'}>
+                urlPath={'customers/'}>
             </CustomerList>
             <CustomersActions>
                 <button type="button" className="btn btn-secondary"
