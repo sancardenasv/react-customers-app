@@ -4,19 +4,17 @@ import PropTypes from 'prop-types';
 
 const CustomerListItem = ({name, editAction, delAction, urlPath, dni}) => {
     return (
-        <div>
-            <div>
-                <div>
-                    <Link to={`${urlPath}${dni}`}>{name}</Link>
-                </div>
-                <div>
-                    <Link to={`${urlPath}${dni}/edit`}>{editAction}</Link>
-                </div>
-                <div>
-                    <Link to={`${urlPath}${dni}/del`}>{delAction}</Link>
-                </div>
+        <>
+            <div className="col-7">
+                <Link to={`${urlPath}${dni}`}>{name}</Link>
             </div>
-        </div>
+            <div className="col-2">
+                <Link to={`${urlPath}${dni}/edit`}>{editAction}</Link>
+            </div>
+            <div className="col-3">
+                <Link to={`${urlPath}${dni}/del`}>{delAction}</Link>
+            </div>
+        </>
     );
 };
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const CustomersActions = ({children}) => {
     return (
-        <div className="row">
+        <div className="col-12 alert alert-dark mt-3" role="alert">
             <div>{children}</div>
         </div>
     );
