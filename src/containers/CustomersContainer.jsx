@@ -1,28 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchCustomers } from "./../actions/fetchCustomers";
 import AppFrame from './../components/AppFrame';
 import CustomerList from './../components/CustomersList';
 import CustomersActions from '../components/CustomersActions';
 
-const customers = [
-    {
-        "dni": "656565650",
-        "name": "Pedro Salazar",
-        "age": 26
-    },
-    {
-        "dni": "9873637643",
-        "name": "Maria Cardonado",
-        "age": 37
-    },
-    {
-        "dni": "872323646834",
-        "name": "Carlos Murcia",
-        "age": 43
-    }
-];
-
 class CustomersContainer extends Component {
+    componentDidMount() {
+        this.props.fetchCustomers();
+    };
+
+    handleAddNew = () => {
+        this.props.history.push('/customers/new');
+    };
+
     renderBody = customers => (
         <div className="row justify-content-center">
             <CustomerList customers={customers}
@@ -40,7 +33,7 @@ class CustomersContainer extends Component {
         return (
             <div className="row">
                 <AppFrame header={'Listado de clientes'}
-                    body={this.renderBody(customers)}>
+                    body={this.renderBody(this.props.customers)}>
                 </AppFrame>
             </div>
         );
@@ -48,7 +41,21 @@ class CustomersContainer extends Component {
 }
 
 CustomersContainer.propTypes = {
-
+    fetchCustomers: PropTypes.func.isRequired,
+    customers: PropTypes.array.isRequired,
 };
 
-export default CustomersContainer;
+// Inject properties
+const mapDispatchToProps = dispatch => ({
+    fetchCustomers: () => dispatch(fetchCustomers())
+});
+
+const mapStateToProps = state => ({
+    customers: state.customers
+});
+
+CustomersContainer.defaultProps = {
+    customers: []
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomersContainer));
