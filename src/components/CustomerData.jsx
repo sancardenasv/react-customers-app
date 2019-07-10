@@ -5,23 +5,27 @@ const CustomerData = ({name, dni, age}) => {
     return (
         <>
             <div className="row">
-                <h1>Datos del CLiente</h1>
+                <h1>Datos del Cliente</h1>
             </div>
             <div className="row">
-                <form>
-                    <div class="form-group">
-                        <label for="nameData">Nombre</label>
-                        <input type="text" class="form-control disabled" id="nameData" value={name}/>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="nameDataLabel">Nombre</span>
                     </div>
-                    <div class="form-group">
-                        <label for="dniData">DNI</label>
-                        <input type="text" class="form-control disabled" id="dniData" value={dni} />
+                    <input type="text" className="form-control" readOnly id="nameData" value={name}/>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="dniDataLabel">DNI</span>
                     </div>
-                    <div class="form-group">
-                        <label for="ageData">Edad</label>
-                        <input type="text" class="form-control disabled" id="ageData" value={age} />
+                    <input type="text" className="form-control" readOnly id="dniData" value={dni}/>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="ageDataLabel">Edad</span>
                     </div>
-                </form>
+                    <input type="text" className="form-control" readOnly id="ageData" value={age}/>
+                </div>
             </div>
         </>
     );
