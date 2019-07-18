@@ -1,18 +1,38 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import AppFrame from "./../components/AppFrame";
 import { getCustomerByDni } from '../selectors/customers';
 import CustomerEdit from "./../components/CustomerEdit";
 import CustomerData from "./../components/CustomerData";
+import { fetchCustomers } from "./../actions/fetchCustomers";
+import { updateCustomer } from "./../actions/updateCustomers";
 
 class CustomerContainer extends Component {
+    componentDidMount() {
+        if (!this.props.customer) {
+            this.props.fetchCustomers();
+        }
+    };
+
+    handleSubmit = values => {
+        console.log(JSON.stringify(values));
+        this.props.updateCustomer(values.dni, values);
+    };
+
+    handleOnBack = () => {
+        this.props.history.goBack();
+    };
+
     renderBody = () =>(
         <Route path="/customers/:dni/edit" children={
             ({match}) => {
                     const CustomerControl = match ? CustomerEdit : CustomerData;
-                    return <CustomerControl {...this.props.customer}/>
+                    return <CustomerControl
+                        {...this.props.customer}
+                        onSubmit={this.handleSubmit}
+                        onBack={this.handleOnBack} />
                 }
         }></Route>
     );
@@ -31,11 +51,17 @@ class CustomerContainer extends Component {
 CustomerContainer.propTypes = {
     dni: PropTypes.string.isRequired,
     customer: PropTypes.object.isRequired,
+    fetchCustomers: PropTypes.func.isRequired,
+    updateCustomer: PropTypes.func.isRequired,
 };
 
 // Set properties from state
 const mapStateToProps = (state, props) => ({
     customer: getCustomerByDni(state, props)
 });
+const mapDispatchToProps = {
+    fetchCustomers,
+    updateCustomer
+};
 
-export default connect(mapStateToProps, null)(CustomerContainer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomerContainer));
