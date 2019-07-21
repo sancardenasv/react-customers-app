@@ -42,6 +42,10 @@ const MyField = ({input, meta, type, lable}) => (
         </div>
     </>
 );
+
+const toNumber = value => value && Number(value);
+const onlyGreater = (value, prev, values) => value && prev && (value > prev ? value : prev);
+
 const CustomerEdit = ({name, dni, age, handleSubmit, submitting, invalid, onBack}) => {
     return (
         <>
@@ -69,10 +73,12 @@ const CustomerEdit = ({name, dni, age, handleSubmit, submitting, invalid, onBack
                     <div className="input-group mb-3">
                         <Field
                             name="age"
-                            // type="number"
+                            type="number"
                             component={MyField}
                             // validate={isNumber}
-                            lable="Edad">
+                            lable="Edad"
+                            parse={toNumber}
+                            normalize={onlyGreater}>
                         </Field>
                     </div>
                     <CustomerActions>

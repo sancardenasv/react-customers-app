@@ -6,4 +6,11 @@ export const apiPut = (url, id, obj) => () => fetch(
             body: JSON.stringify(obj),
             headers: new Headers({'content-type':'application/json'})
         }
-    ).then(v => v.json());
+    ).then(v => v.json())
+    .then(r => {
+        console.log("PUT RESPONSE", r);
+        if (!r.status) {
+            return Promise.reject(r.reason);
+        }
+        return r;
+    });
