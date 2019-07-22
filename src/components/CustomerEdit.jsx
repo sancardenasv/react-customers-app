@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, Field } from "redux-form";
 import { setPropsAsInitial } from '../helpers/setPropsAsInitial';
 import CustomerActions from "./../components/CustomersActions";
+import { Prompt } from "react-router-dom";
 
 const isNumber = value => {
     return isNaN(Number(value));
@@ -44,14 +45,11 @@ const MyField = ({input, meta, type, lable}) => (
 );
 
 const toNumber = value => value && Number(value);
-const onlyGreater = (value, prev, values) => value && prev && (value > prev ? value : prev);
+const onlyGreater = (value, prev, values) => value && (!prev || value > prev ? value : prev);
 
-const CustomerEdit = ({name, dni, age, handleSubmit, submitting, invalid, onBack}) => {
+const CustomerEdit = ({name, dni, age, handleSubmit, submitting, invalid, onBack, pristine, submitSucceeded}) => {
     return (
         <>
-            <div className="row">
-                <h1>Edición del Cliente</h1>
-            </div>
             <div className="row">
                 <form name="CustomerEdit" noValidate onSubmit={handleSubmit}>
                     <div className="input-group mb-3">
@@ -82,9 +80,10 @@ const CustomerEdit = ({name, dni, age, handleSubmit, submitting, invalid, onBack
                         </Field>
                     </div>
                     <CustomerActions>
-                        <button type="submit" className="btn btn-success" disabled={invalid || submitting}>Guardar</button>
-                        <button type="button" className="btn btn-secondary" onClick={onBack}>Cancelar</button>
+                        <button type="submit" className="btn btn-success" disabled={invalid || submitting || pristine}>Guardar</button>
+                        <button type="button" className="btn btn-secondary" onClick={onBack} disabled={submitting}>Cancelar</button>
                     </CustomerActions>
+                    <Prompt when={!pristine && !submitSucceeded} message="Se perderan los datos. Está seguro?"></Prompt>
                 </form>
             </div>
         </>

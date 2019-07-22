@@ -45,7 +45,7 @@ class CustomerContainer extends Component {
     render() {
         return (
             <div>
-                <AppFrame header={`Cliente ${this.props.dni}`}
+                <AppFrame header={`Edición del cliente ${this.props.dni}`}
                     body={this.renderBody()}>
                 </AppFrame>
             </div>
@@ -55,7 +55,7 @@ class CustomerContainer extends Component {
 
 CustomerContainer.propTypes = {
     dni: PropTypes.string.isRequired,
-    customer: PropTypes.object.isRequired,
+    customer: PropTypes.object,
     fetchCustomers: PropTypes.func.isRequired,
     updateCustomer: PropTypes.func.isRequired,
 };
