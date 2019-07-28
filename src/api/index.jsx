@@ -13,7 +13,7 @@ export const apiPut = (url, id, obj) => () => fetch(
         if (!r.status) {
             return Promise.reject(r.reason);
         }
-        return r;
+        return r.body.customer;
     });
 
 export const apiPost = (url, obj) => () => fetch(
@@ -29,5 +29,5 @@ export const apiPost = (url, obj) => () => fetch(
         if (!r.status) {
             return Promise.reject(r.reason);
         }
-        return r;
+        return r.body.customer;
     });
