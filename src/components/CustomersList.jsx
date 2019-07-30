@@ -4,7 +4,8 @@ import CustomerListItem from './CustomerListItem';
 
 const CustomersList = ({customers, urlPath}) => {
     return (
-        <div className="row">
+        <table className="table table-striped table-hover">
+            <tbody>
             {
                 customers.map( c => 
                     <CustomerListItem
@@ -17,7 +18,8 @@ const CustomersList = ({customers, urlPath}) => {
                     </CustomerListItem>
                 )
             }
-        </div>
+            </tbody>
+        </table>
     );
 };
 

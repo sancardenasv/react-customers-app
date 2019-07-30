@@ -9,6 +9,7 @@ import CustomerEdit from "./../components/CustomerEdit";
 import CustomerData from "./../components/CustomerData";
 import { fetchCustomers } from "./../actions/fetchCustomers";
 import { updateCustomer } from "./../actions/updateCustomers";
+import { deleteCustomer } from "./../actions/deleteCustomer";
 
 class CustomerContainer extends Component {
     componentDidMount() {
@@ -29,23 +30,39 @@ class CustomerContainer extends Component {
         this.props.history.goBack();
     };
 
+    handleOnDelete = dni => {
+        console.log("Handle On Delete");
+        this.props.deleteCustomer(dni).then(v => {
+            this.handleOnBack();
+        });
+    }
+
     renderBody = () =>(
         <Route path="/customers/:dni/edit" children={
-            ({match}) => {
-                    const CustomerControl = match ? CustomerEdit : CustomerData;
-                    return <CustomerControl
-                        {...this.props.customer}
-                        onSubmit={this.handleSubmit}
-                        onSubmitSuccess={this.handleOnBack}
-                        onBack={this.handleOnBack} />
-                }
+            ({match: isEdit}) => (
+                <Route path="/customers/:dni/del" children={
+                    ({match: isDelete}) => {
+                        return this.renderCustomerControl(isEdit, isDelete);
+                    }
+                }></Route>
+            )
         }></Route>
     );
+
+    renderCustomerControl = (isEdit, isDelete) => {
+        const CustomerControl = isEdit ? CustomerEdit : CustomerData;
+        return <CustomerControl {...this.props.customer}
+                    onSubmit={this.handleSubmit}
+                    onSubmitSuccess={this.handleOnBack}
+                    onBack={this.handleOnBack}
+                    isDeleteAllowed={!!isDelete}
+                    onDelete={this.handleOnDelete} />;
+    }
 
     render() {
         return (
             <div>
-                <AppFrame header={`Edición del cliente ${this.props.dni}`}
+                <AppFrame header={`Cliente ${this.props.dni}`}
                     body={this.renderBody()}>
                 </AppFrame>
             </div>
@@ -58,6 +75,7 @@ CustomerContainer.propTypes = {
     customer: PropTypes.object,
     fetchCustomers: PropTypes.func.isRequired,
     updateCustomer: PropTypes.func.isRequired,
+    deleteCustomer: PropTypes.func.isRequired,
 };
 
 // Set properties from state
@@ -66,7 +84,8 @@ const mapStateToProps = (state, props) => ({
 });
 const mapDispatchToProps = {
     fetchCustomers,
-    updateCustomer
+    updateCustomer,
+    deleteCustomer
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomerContainer));

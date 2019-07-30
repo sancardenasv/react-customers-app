@@ -31,3 +31,19 @@ export const apiPost = (url, obj) => () => fetch(
         }
         return r.body.customer;
     });
+
+export const apiDelete = (url, id) => () => fetch(
+    `${url}/${id}`,
+        {
+            method: 'DELETE',
+            headers: new Headers({'content-type':'application/json'})
+        }
+    ).then(v => v.json())
+    .then(r => {
+        console.log("DELETE RESPONSE", r);
+        if (!r.status) {
+            return Promise.reject(r.reason);
+        }
+        return id;
+    });
+    
